@@ -216,7 +216,7 @@ The relationship between group IDs and permissions are defined in the file [fram
 </permission>
 ```
 
-An important element to understand Android security is that all apps have the same level of privileges: both native and third-party apps are built on the same APIs and are run in similar environments. Also, all apps are executed not as 'root', but with the user level of privileges. That means that, basically, apps cannot perform some actions or access some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) mobiles need to be rooted.
+An important element to understand Android security is that all apps have the same level of privileges: both pre-installed and third-party apps are built on the same APIs and are run in similar environments. Also, all apps are executed not as 'root', but with the user level of privileges. That means that, basically, apps cannot perform some actions or access some parts of the file system. In order to be able to execute an app with 'root' privileges (inject packets in a network, run interpreters like Python etc.) a device needs to be rooted.
 
 ##### Zygote
 
