@@ -1,6 +1,6 @@
-## Testing Cryptography
+## Testing Cryptography in Android Apps
 
-### Verifying Key Management
+### Testing for Hardcoded Cryptographic Keys
 
 #### Overview
 
@@ -72,7 +72,6 @@ buildTypes {
 
 * shared preferences, typically at /data/data/package_name/shared_prefs
 
-
 #### Remediation
 
 If you need to store a key for repeated use, use a mechanism, such as KeyStore<sup>[2]</sup>, that provides a mechanism for long term storage and retrieval of cryptographic keys.
@@ -100,44 +99,6 @@ If you need to store a key for repeated use, use a mechanism, such as KeyStore<s
 ##### Tools
 * [QARK](https://github.com/linkedin/qark)
 * [Mobile Security Framework](https://github.com/ajinabraham/Mobile-Security-Framework-MobSF)
-
-
-### Testing for Custom Implementations of Cryptography
-
-#### Overview
-
-The use of a non-standard and custom build algorithm for cryptographic functionalities is dangerous because a determined attacker may be able to break the algorithm and compromise data that has been protected. Implementing cryptographic functions is time consuming, difficult and likely to fail. Instead well-known algorithms that were already proven to be secure should be used. All mature frameworks and libraries offer cryptographic functions that should also be used when implementing mobile apps.
-
-#### Static Analysis
-
-Carefully inspect all the cryptographic methods used within the source code, especially those which are directly applied to sensitive data. Pay close attention to seemingly standard but modified algorithms. Remember that encoding is not encryption! Any appearance of bit shift operators like exclusive OR operations might be a good sign to start digging deeper.
-
-#### Dynamic Analysis
-
-Although fuzzing of the custom algorithm might work in case of very weak crypto, the recommended approach would be to decompile the APK and inspect the algorithm to see if custom encryption schemes is really the case (see "Static Analysis").
-
-#### Remediation
-
-Do not develop custom cryptographic algorithms, as it is likely they are prone to attacks that are already well-understood by cryptographers.
-
-When there is a need to store sensitive data, use strong, up-to-date cryptographic algorithms. Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations. The KeyStore is suitable for storing sensitive information locally and a list of strong ciphers offered by it can be found in the Android documentation<sup>[1]</sup>.
-
-
-#### References
-
-##### OWASP Mobile Top 10 2016
-* M6 - Broken Cryptography
-
-##### OWASP MASVS
-- V3.2: "The app uses proven implementations of cryptographic primitives"
-
-##### CWE
-* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
-##### Info
-[1] Supported Ciphers in KeyStore - https://developer.android.com/training/articles/keystore.html#SupportedCiphers
-
-
 
 ### Verifying the Configuration of Cryptographic Standard Algorithms
 
@@ -191,69 +152,6 @@ Use cryptographic algorithm configurations that are currently considered strong,
 
 -- TODO [Add relevant tools for "Verifying the Configuration of Cryptographic Standard Algorithms"] --
 * Enjarify - https://github.com/google/enjarify
-
-
-
-### Testing for Insecure and/or Deprecated Cryptographic Algorithms
-
-#### Overview
-
-Many cryptographic algorithms and protocols should not be used because they have been shown to have significant weaknesses or are otherwise insufficient for modern security requirements.
-
-#### Static Analysis
-
-Inspect the source code to identify the instances of cryptographic algorithms throughout the application, and look for known weak ones, such as
-* DES
-* RC2
-* RC4
-* BLOWFISH
-* CRC32
-* MD4
-* MD5
-* SHA1 and others.
-
-See "Remediation" section for a basic list of recommended algorithms.
-
-Example initialization of DES algorithm, that is considered weak:
-```Java
-Cipher cipher = Cipher.getInstance("DES");
-```
-
-#### Dynamic Analysis
-
--- TODO [Give examples of Dynamic Testing for "Testing for Insecure and/or Deprecated Cryptographic Algorithms"] --
-
-#### Remediation
-
-Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require a billion years of computing time, can now be broken in days or hours. This includes MD4, MD5, SHA1, DES, and other algorithms that were once considered as strong. Examples of currently recommended algorithms<sup>[1][2]</sup>:
-
-* Confidentiality: AES-256
-* Integrity: SHA-256, SHA-384, SHA-512
-* Digital signature: RSA (3072 bits and higher), ECDSA with NIST P-384
-* Key establishment: RSA (3072 bits and higher), DH (3072 bits or higher), ECDH with NIST P-384
-
-#### References
-
-##### OWASP Mobile Top 10
-* M6 - Broken Cryptography
-
-##### OWASP MASVS
-- V3.3: "The app uses cryptographic primitives that are appropriate for the particular use-case, configured with parameters that adhere to industry best practices"
-- V3.4: "The app does not use cryptographic protocols or algorithms that are widely considered depreciated for security purposes"
-
-##### CWE
-* CWE-326: Inadequate Encryption Strength
-* CWE-327: Use of a Broken or Risky Cryptographic Algorithm
-
-##### Info
-[1] Commercial National Security Algorithm Suite and Quantum Computing FAQ - https://cryptome.org/2016/01/CNSA-Suite-and-Quantum-Computing-FAQ.pdf
-[2] NIST Special Publication 800-57 - http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf
-[3] Security "Crypto" provider deprecated in Android N -  https://android-developers.googleblog.com/2016/06/security-crypto-provider-deprecated-in.html
-
-##### Tools
-* QARK - https://github.com/linkedin/qark
-* Mobile Security Framework - https://github.com/ajinabraham/Mobile-Security-Framework-MobSF
-
 
 ### Testing Random Number Generation
 
