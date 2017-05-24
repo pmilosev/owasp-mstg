@@ -306,9 +306,7 @@ A manifest is a text file and can be edited within Android Studio, the preferred
 
 ##### Activities
 
-Activities make up the visible part of any app. More specifically, one activity exists per screen (e.g. user interface) in an app. For instance, apps that have 3 different screens implement 3 different activities, that allow the user to interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts.
-
-Activities implement manifest files. Each activity needs to be declared in the app manifest with the following syntax:
+Activities make up the visible part of any app. More specifically, one activity exists per screen (e.g. user interface) in an app. For instance, apps that have 3 different screens implement 3 different activities, that allow the user to interact with the system (get and enter information). Activities are declared by extending the Activity class; they contain all user interface elements: fragments, views and layouts. Each activity needs to be declared in the app manifest with the following syntax:
 
 ```
 <activity android:name="ActivityName">
